@@ -35,10 +35,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ButtonState.cs" />
     <Compile Include="GearShiftPosition.cs" />
-    <Compile Include="Joystick.cs" />
     <Compile Include="LogitechDrivingForceGT.cs" />
     <Compile Include="LogitechDrivingForceGTChangedEventArgs.cs" />
     <Compile Include="LogitechDrivingForceGTListener.cs" />
+    <Compile Include="Internal\JoystickCommunicator.cs" />
+    <Compile Include="Internal\JoystickChange.cs" />
+    <Compile Include="Internal\InputType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -48,4 +50,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Internal\" />
+  </ItemGroup>
 </Project>

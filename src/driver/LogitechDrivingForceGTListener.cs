@@ -1,18 +1,16 @@
-using System;
-using System.IO;
-
 //
 // Original code taken from
 // https://github.com/mpolaczyk/blog-examples/blob/master/jstest-mono/jstest-mono.cs
 //
+using System;
+using System.IO;
+using Pingvinen.LogitechDrivingForceGTDriver.Internal;
 
 namespace Pingvinen.LogitechDrivingForceGTDriver
 {
 	public class LogitechDrivingForceGTListener
 	{
 		public event EventHandler<LogitechDrivingForceGTChangedEventArgs> RaiseOnChangedEvent;
-
-		private const int PedalMaxValue = 32767;
 
 		public void Listen(string deviceFile)
 		{
@@ -27,134 +25,138 @@ namespace Pingvinen.LogitechDrivingForceGTDriver
 			using(FileStream fs = new FileStream(device.DeviceFile, FileMode.Open))
 			{
 				byte[] buff = new byte[8];
-				Joystick j = new Joystick();
+				JoystickCommunicator j = new JoystickCommunicator();
+				JoystickChange change;
 
 				while (true)
 				{
 					// Read 8 bytes from file and analyze.
 					fs.Read(buff, 0, 8);
-					if (j.DetectChange(buff))
+					change = j.GetChange(buff);
+
+					if (change != default(JoystickChange))
 					{
-						#region Map axis
-						device.RightPedal = 0;
-						device.LeftPedal = 0;
-						foreach (byte key in j.Axis.Keys)
+						if (change.KeyType == InputType.Axis)
 						{
-							switch (key)
+							#region Map axis
+							device.RightPedal = 0;
+							device.LeftPedal = 0;
+
+							switch (change.Key)
 							{
 								case 0:
-									device.SteeringWheelPosition = j.Axis[key];
+									device.SteeringWheelPosition = change.Value;
 									break;
 
 								case 1:
-									device.RightPedal = -j.Axis[key] + PedalMaxValue; // map from [-max,max] to [0,2*max]
+									device.RightPedal = -change.Value + short.MaxValue; // map from [-max,max] to [0,2*max]
 									break;
 
 								case 2:
-									device.LeftPedal = -j.Axis[key] + PedalMaxValue; // map from [-max,max] to [0,2*max]
+									device.LeftPedal = -change.Value + short.MaxValue; // map from [-max,max] to [0,2*max]
 									break;
 
 								case 3:
-									device.HorizontalAxisPosition = j.Axis[key];
+									device.HorizontalAxisPosition = change.Value;
 									break;
 
 								case 4:
-									device.VerticalAxisPosition = j.Axis[key];
+									device.VerticalAxisPosition = change.Value;
 									break;
 							}
+							#endregion
 						}
-						#endregion
-
-						#region Map buttons
-						device.GearShiftPosition = GearShiftPosition.Neutral;
-						foreach (byte key in j.Buttons.Keys)
+						else if (change.KeyType == InputType.Button)
 						{
-							switch (key)
+							#region Map buttons
+							device.GearShiftPosition = GearShiftPosition.Neutral;
+
+							switch (change.Key)
 							{
 								case 0:
-									device.Cross = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Cross = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 1:
-									device.Square = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Square = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 2:
-									device.Circle = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Circle = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 3:
-									device.Triangle = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Triangle = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 4:
-									device.RightFlap = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.RightFlap = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 5:
-									device.LeftFlap = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.LeftFlap = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 6:
-									device.R2 = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.R2 = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 7:
-									device.L2 = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.L2 = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 8:
-									device.Select = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Select = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 9:
-									device.Start = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Start = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 10:
-									device.R3 = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.R3 = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 11:
-									device.L3 = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.L3 = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 12:
-									if (j.Buttons[key])
+									if (change.Value == 1)
 									{
 										device.GearShiftPosition = GearShiftPosition.Minus;
 									}
 									break;
 
 								case 13:
-									if (j.Buttons[key])
+									if (change.Value == 1)
 									{
 										device.GearShiftPosition = GearShiftPosition.Plus;
 									}
 									break;
 
 								case 14:
-									device.Back = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Back = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 15:
-									device.Plus = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Plus = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 18:
-									device.Minus = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Minus = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 19:
-									device.Horn = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.Horn = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 
 								case 20:
-									device.PsButton = j.Buttons[key] ? ButtonState.Down : ButtonState.Up;
+									device.PsButton = change.Value == 1 ? ButtonState.Up : ButtonState.Down;
 									break;
 							}
+							#endregion
 						}
-						#endregion
 
 						this.RaiseOnChangedEvent(this, new LogitechDrivingForceGTChangedEventArgs(device));
 					}
