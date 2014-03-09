@@ -49,6 +49,8 @@ namespace Pingvinen.LogitechDrivingForceGTDriver.Internal
 			this.inputs.Add(InputType.Button + "11", new ButtonInput() { Setter = (dev, value) => dev.L3 = (ButtonState)value, Getter = (dev) => dev.L3, Name = InputName.L3 });
 			this.inputs.Add(InputType.Button + "14", new ButtonInput() { Setter = (dev, value) => dev.Back = (ButtonState)value, Getter = (dev) => dev.Back, Name = InputName.Back });
 			this.inputs.Add(InputType.Button + "15", new ButtonInput() { Setter = (dev, value) => dev.Plus = (ButtonState)value, Getter = (dev) => dev.Plus, Name = InputName.Plus });
+			this.inputs.Add(InputType.Button + "16", new ButtonInput() { Setter = (dev, value) => dev.MiniWheelRight = (ButtonState)value, Getter = (dev) => dev.MiniWheelRight, Name = InputName.MiniWheelRight });
+			this.inputs.Add(InputType.Button + "17", new ButtonInput() { Setter = (dev, value) => dev.MiniWheelLeft = (ButtonState)value, Getter = (dev) => dev.MiniWheelLeft, Name = InputName.MiniWheelLeft });
 			this.inputs.Add(InputType.Button + "18", new ButtonInput() { Setter = (dev, value) => dev.Minus = (ButtonState)value, Getter = (dev) => dev.Minus, Name = InputName.Minus });
 			this.inputs.Add(InputType.Button + "19", new ButtonInput() { Setter = (dev, value) => dev.Horn = (ButtonState)value, Getter = (dev) => dev.Horn, Name = InputName.Horn });
 			this.inputs.Add(InputType.Button + "20", new ButtonInput() { Setter = (dev, value) => dev.PsButton = (ButtonState)value, Getter = (dev) => dev.PsButton, Name = InputName.PS });

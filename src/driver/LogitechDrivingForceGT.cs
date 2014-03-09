@@ -34,5 +34,7 @@ namespace Pingvinen.LogitechDrivingForceGTDriver
 		public ButtonState Start { get; set; }
 		public int LeftPedal { get; set; }
 		public int RightPedal { get; set; }
+		public ButtonState MiniWheelLeft { get; set; }
+		public ButtonState MiniWheelRight { get; set; }
 	}
 }

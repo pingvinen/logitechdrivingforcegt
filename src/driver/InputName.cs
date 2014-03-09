@@ -26,6 +26,8 @@ namespace Pingvinen.LogitechDrivingForceGTDriver
 		Minus,
 		Horn,
 		PS,
-		GearShift
+		GearShift,
+		MiniWheelLeft,
+		MiniWheelRight
 	}
 }

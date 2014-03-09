@@ -45,6 +45,8 @@ namespace Pingvinen.LogitechDrivingForceGTDriver
 
 						if (input == default(Input))
 						{
+							Console.SetCursorPosition(0, Console.BufferHeight);
+							Console.WriteLine("No input for {0} {1} = {2}", change.KeyType, change.Key, change.Value);
 							continue;
 						}
 
