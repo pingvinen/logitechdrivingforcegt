@@ -40,7 +40,13 @@
     <Compile Include="LogitechDrivingForceGTListener.cs" />
     <Compile Include="Internal\JoystickCommunicator.cs" />
     <Compile Include="Internal\JoystickChange.cs" />
-    <Compile Include="Internal\InputType.cs" />
+    <Compile Include="InputType.cs" />
+    <Compile Include="Internal\Input.cs" />
+    <Compile Include="InputName.cs" />
+    <Compile Include="Internal\ButtonInput.cs" />
+    <Compile Include="Internal\PedalInput.cs" />
+    <Compile Include="Internal\Inputs.cs" />
+    <Compile Include="Internal\InvertedInput.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

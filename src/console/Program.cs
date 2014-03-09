@@ -21,7 +21,7 @@ namespace console
 				Console.WriteLine("VerticalAxisPosition: {0,-10}", dev.VerticalAxisPosition);
 				Console.WriteLine("LeftPedal: {0,-10}", dev.LeftPedal);
 				Console.WriteLine("RightPedal: {0,-10}", dev.RightPedal);
-				Console.WriteLine();
+				Console.WriteLine("                                               ");
 				Console.WriteLine("GearShiftPosition: {0,-10}", dev.GearShiftPosition);
 				Console.WriteLine("Horn: {0,-10}", dev.Horn);
 
@@ -45,6 +45,9 @@ namespace console
 				Console.WriteLine("Select: {0,-10}", dev.Select);
 				Console.WriteLine("Start: {0,-10}", dev.Start);
 				Console.WriteLine("PsButton: {0,-10}", dev.PsButton);
+
+				Console.WriteLine("                                               ");
+				Console.WriteLine("{0}: {1} => {2}                         ", e.ChangedName, e.OldValue, e.NewValue);
 			};
 
 			Console.WriteLine("Press enter to start listening");
